@@ -135,21 +135,35 @@ require_once "Frontend/template/header.php";
                     <?php
                     //$dias_semana = explode(", ", $reserva->getDias_semana());
                     ?>
-                    <div style="display: flex;">
-                        <label for="seg">Seg:</label>
-                        <input type="checkbox" class="form-control" id="seg" name="dias[]" value="1">
-                        <label for="ter">Ter:</label>
-                        <input type="checkbox" class="form-control" id="ter" name="dias[]" value="2">
-                        <label for="qua">Qua:</label>
-                        <input type="checkbox" class="form-control" id="qua" name="dias[]" value="3">
-                        <label for="qui">Qui:</label>
-                        <input type="checkbox" class="form-control" id="qui" name="dias[]" value="4">
-                        <label for="sex">Sex:</label>
-                        <input type="checkbox" class="form-control" id="sex" name="dias[]" value="5">
-                        <label for="sab">Sab:</label>
-                        <input type="checkbox" class="form-control" id="sab" name="dias[]" value="6">
-                        <label for="dom">Dom:</label>
-                        <input type="checkbox" class="form-control" id="dom" name="dias[]" value="7">
+                    <div class="d-flex" style="justify-content: center;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="seg" name="dias[]" value="1" />
+                            <label class="form-check-label" for="seg">Seg</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="ter">Ter</label>
+                            <input type="checkbox" class="form-check-input" id="ter" name="dias[]" value="2">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="qua">Qua</label>
+                            <input type="checkbox" class="form-check-input" id="qua" name="dias[]" value="3">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="qui">Qui</label>
+                            <input type="checkbox" class="form-check-input" id="qui" name="dias[]" value="4">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="sex">Sex</label>
+                            <input type="checkbox" class="form-check-input" id="sex" name="dias[]" value="5">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="sab">Sab</label>
+                            <input type="checkbox" class="form-check-input" id="sab" name="dias[]" value="6">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="dom">Dom</label>
+                            <input type="checkbox" class="form-check-input" id="dom" name="dias[]" value="7">
+                        </div>
                     </div>
 
                 </div>
@@ -161,31 +175,46 @@ require_once "Frontend/template/header.php";
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <button type="submit" name="save" class="btn btn-success">Salvar</button>
                 <?php if ($reserva) : ?>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Excluir</button>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="btn btn-danger" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">Excluir</button>
+                <?php endif ?>
+                <a href="eventos.php" class="btn btn-secondary">Voltar</a>
+
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <p>Tem certeza de que deseja excluir a reserva de <b><?php echo $reserva->getDocente(); ?></b> para a sala <b><?php echo $sala->getNumero(); ?></b>?</p>
+                                            <p>Esta ação não pode ser desfeita.</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+                                            <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                                        </div>
+
+                                    </div>
+
                                 </div>
-                                <div class="modal-body text-center">
-                                    <p>Tem certeza de que deseja excluir a reserva de <b><?php echo $reserva->getDocente();?></b> para a sala <b><?php echo $sala->getNumero();?></b>?</p>
-                                    <p>Esta ação não pode ser desfeita.</p>
-                                </div>
-                                <div class="modal-footer justify-content-center">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
-                <?php endif ?>
-                <a href="eventos.php" class="btn btn-secondary">Voltar</a>
+
+                </div>
             </div>
-        </div>
     </form>
 </div>
 

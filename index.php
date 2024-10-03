@@ -74,16 +74,18 @@ require_once "Frontend/template/header.php";
 
 
 <div class="container">
-<button style="margin-top: 2rem; margin-bottom: 2rem;" type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">
-            Filtrar
-        </button>
+    <button style="margin-top: 2rem; margin-bottom: 2rem;" type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">
+        Filtrar
+    </button>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="exampleModalLabel">Consultar Salas Disponiveis</h3>
-                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="index.php" method="post">
@@ -108,29 +110,60 @@ require_once "Frontend/template/header.php";
                                 </div>
 
                                 <h5>Dias da semana:</h5>
-                                <div style="display: flex;">
-                                    <label for="seg">Seg:</label>
-                                    <input type="checkbox" class="form-control" id="seg" name="dias[]" value="1">
-                                    <label for="ter">Ter:</label>
-                                    <input type="checkbox" class="form-control" id="ter" name="dias[]" value="2">
-                                    <label for="qua">Qua:</label>
-                                    <input type="checkbox" class="form-control" id="qua" name="dias[]" value="3">
-                                    <label for="qui">Qui:</label>
-                                    <input type="checkbox" class="form-control" id="qui" name="dias[]" value="4">
-                                    <label for="sex">Sex:</label>
-                                    <input type="checkbox" class="form-control" id="sex" name="dias[]" value="5">
-                                    <label for="sab">Sab:</label>
-                                    <input type="checkbox" class="form-control" id="sab" name="dias[]" value="6">
-                                    <label for="dom">Dom:</label>
-                                    <input type="checkbox" class="form-control" id="dom" name="dias[]" value="7">
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="seg" name="dias[]" value="1" />
+                                        <label class="form-check-label" for="seg">Seg</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="ter">Ter</label>
+                                        <input type="checkbox" class="form-check-input" id="ter" name="dias[]" value="2">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="qua">Qua</label>
+                                        <input type="checkbox" class="form-check-input" id="qua" name="dias[]" value="3">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="qui">Qui</label>
+                                        <input type="checkbox" class="form-check-input" id="qui" name="dias[]" value="4">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="sex">Sex</label>
+                                        <input type="checkbox" class="form-check-input" id="sex" name="dias[]" value="5">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="sab">Sab</label>
+                                        <input type="checkbox" class="form-check-input" id="sab" name="dias[]" value="6">
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label" for="dom">Dom</label>
+                                        <input type="checkbox" class="form-check-input" id="dom" name="dias[]" value="7">
+                                    </div>
                                 </div>
 
                             </div>
                             <br>
                             <button type="submit" name="save" class="btn btn-success">Filtar</button>
                         </div>
+                    </form>
                 </div>
-                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="exampleModalLabel">Consultar Salas Disponiveis</h3>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
             </div>
 
         </div>
@@ -161,7 +194,46 @@ require_once "Frontend/template/header.php";
                         <td><?php echo $reserva['horario_inicio']; ?></td>
                         <td><?php echo $reserva['horario_fim']; ?></td>
                         <td><?php echo $reserva['docente']; ?></td>
-                        <td><?php echo $reserva['dias_semana']; ?></td>
+                        <?php
+                        $dias = explode(", ", $reserva['dias_semana']);
+                        $string_dias = array();
+
+                        foreach ($dias as $dia) {
+                            switch ($dia) {
+                                case 1:
+                                    array_push($string_dias, "seg");
+                                    break;
+
+                                case 2:
+                                    array_push($string_dias, "ter");
+                                    break;
+
+                                case 3:
+                                    array_push($string_dias, "qua");
+                                    break;
+                                case 4:
+                                    array_push($string_dias, "qui");
+                                    break;
+                                case 5:
+                                    array_push($string_dias, "sex");
+                                    break;
+                                case 6:
+                                    array_push($string_dias, "sab");
+                                    break;
+                                case 7:
+                                    array_push($string_dias, "dom");
+                                    break;
+
+                                default:
+                                    # code...
+                                    break;
+                            }
+                        }
+                        
+                        $teste = implode(', ', $string_dias);
+
+                        ?>
+                        <td><?php echo $teste; ?></td>
                     <?php endforeach; ?>
                     </tr>
             </tbody>

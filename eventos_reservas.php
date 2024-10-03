@@ -7,9 +7,9 @@ if (!isset($_SESSION['token'])) {
     exit();
 }
 
-include_once "../pi_sistema_reserva/Backend/config/Database.php";
-include_once "../pi_sistema_reserva/Backend/dao/EventoDAO.php";
-include_once "../pi_sistema_reserva/Backend/entity/Evento.php";
+
+include_once "Backend/dao/EventoDAO.php";
+include_once "Backend/entity/Evento.php";
 
 require_once "Backend/config/Database.php";
 require_once "Backend/dao/ReservaDAO.php";

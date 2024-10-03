@@ -2,7 +2,7 @@
 
 session_start(); // Inicia uma sessão na página
 
-if(!isset($_SESSION['token'])) {
+if (!isset($_SESSION['token'])) {
     header("Location: ./login.php");
     exit();
 }
@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <?php
-    require_once "Frontend/template/header.php";
-    ?>
+require_once "Frontend/template/header.php";
+?>
 
 <body>
     <div class="container">
@@ -68,31 +68,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <button type="submit" name="save" class="btn btn-success">Salvar</button>
                     <?php if ($tipo) : ?>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Excluir</button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+                        <button type="button" class="btn btn-danger" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">Excluir</button>
+                        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body text-center">
-                                        <p>Tem certeza de que deseja excluir o tipo de sala <b><?php echo $tipo->getTipo(); ?></b>?</p>
-                                        <p>Esta ação não pode ser desfeita.</p>
-                                    </div>
-                                    <div class="modal-footer justify-content-center">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                                    <div class="modal-body">
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="modal-header">
+                                                    <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <p>Tem certeza de que deseja excluir o tipo de sala <b><?php echo $tipo->getTipo(); ?></b>?</p>
+                                                <p>Esta ação não pode ser desfeita.</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+                                                <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+
+
+
+
+
+
+
                             </div>
+
                         </div>
                     <?php endif ?>
                     <a href="tipo.php" class="btn btn-secondary">Voltar</a>
-                </div>
-            </div>
         </form>
     </div>
+    
     <?php
     require_once "Frontend/template/footer.php";
     ?>
