@@ -102,6 +102,8 @@ require_once "Frontend/template/header.php";
                         <input type="text" class="form-control" id="oferta" name="oferta" value="<?php echo $evento ? $evento->getOferta() : ''  ?>" required>
                     </div>
 
+                    <br>
+
 
                     <button type="submit" name="save" class="btn btn-success">Salvar</i></button>
                     <?php if (!$reservaEventoById) : ?>

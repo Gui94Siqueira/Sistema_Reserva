@@ -77,8 +77,6 @@
       width: 100%;
       /* z-index: 1000; */
     }
-
-
   </style>
 </head>
 
@@ -110,29 +108,64 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="mapao.php">Mapa</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="eventos.php">Eventos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="sala.php">Salas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="tipo.php">Labs</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="login.php">Adicionar </a>
-            </li>
+
             <?php if (isset($_SESSION['token'])) : ?>
 
               <li class="nav-item">
-                <form action="authService.php" method="post" style="display: inline;">
-                  <input type="hidden" name="type" value="logout">
-                  <button id="btnLogout" type="submit">Logout</button>
-                </form>
+                <a class="nav-link" href="eventos.php">Eventos</a>
               </li>
-            <?php else : ?>
-              <a class="nav-link" href="login.php"><b>Login</b></a>
-            <?php endif; ?>
+              <li class="nav-item">
+                <a class="nav-link" href="index.php">Consultar</a>
+              </li>
+
+
+              <li class="nav-item dropdown">
+                <a
+                  data-mdb-dropdown-init
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  aria-expanded="false">
+                  <i class="fa-solid fa-building"></i>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li>
+                    <a class="dropdown-item" href="sala.php">Salas</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="tipo.php">Labs</a>
+                  </li>
+                </ul>
+
+
+              <li class="nav-item dropdown">
+                <a
+                  data-mdb-dropdown-init
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  aria-expanded="false">
+                  <i class="fa-solid fa-user"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li>
+                    <a class="dropdown-item" href="login.php">Adicionar</a>
+                  </li>
+
+                  <li>
+                    <form action="authService.php" method="post" style="display: inline;">
+                      <input type="hidden" name="type" value="logout">
+                      <button class="dropdown-item" id="btnLogout" type="submit">Logout</button>
+                    </form>
+                  </li>
+                </ul>
+
+              <?php else : ?>
+                <a class="nav-link" href="login.php"><b>Login</b></a>
+              <?php endif; ?>
 
           </ul>
 
