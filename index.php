@@ -74,11 +74,19 @@ require_once "Frontend/template/header.php";
 
 
 <div class="container">
-    <button style="margin-top: 2rem; margin-bottom: 2rem;" type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">
-        Filtrar
-    </button>
 
 
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-primary" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">
+            Filtrar
+        </button>
+        <form class="d-flex" role="search" onsubmit="return false;"> <!-- Impede o comportamento de submissão -->
+            <input id="searchInput" class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+        </form>
+    </div>
+
+
+    <br>
 
     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -184,11 +192,11 @@ require_once "Frontend/template/header.php";
                     <th scope="col">Dias semana</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="items">
                 <?php foreach ($reservas as $reserva) : ?>
-                    <tr>
-                        <td><?php echo $reserva['numero']; ?></td>
-                        <td><?php echo $reserva['titulo']; ?></td>
+                    <tr class="item-table">
+                        <td class="table-number"><?php echo $reserva['numero']; ?></td>
+                        <td class="table-title"><?php echo $reserva['titulo']; ?></td>
                         <td><?php echo $reserva['data_inicio']; ?></td>
                         <td><?php echo $reserva['data_fim']; ?></td>
                         <td><?php echo $reserva['horario_inicio']; ?></td>
@@ -229,7 +237,7 @@ require_once "Frontend/template/header.php";
                                     break;
                             }
                         }
-                        
+
                         $teste = implode(', ', $string_dias);
 
                         ?>
@@ -242,6 +250,42 @@ require_once "Frontend/template/header.php";
 </div>
 
 </div>
+
+<script>
+    // Selecionar o campo de pesquisa e o container dos eventos
+    const searchInput = document.getElementById("searchInput");
+    const eventosContainer = document.getElementById("items");
+
+    // Adicionar o evento de escuta de input
+    searchInput.addEventListener("input", function() {
+        const searchTerm = searchInput.value.toLowerCase().trim(); // O texto inserido em minúsculas e sem espaços
+
+        // Selecionar todos os itens (linhas) da tabela
+        const eventoItems = eventosContainer.getElementsByClassName("item-table");
+
+        // Loop para cada linha da tabela e verificar se deve ser exibida ou não
+        Array.from(eventoItems).forEach(function(eventoItem) {
+            // Selecionar todas as células (td) dentro da linha
+            const cells = eventoItem.getElementsByTagName("td");
+
+            // Variável para controlar se a linha deve ser exibida
+            let showRow = false;
+
+            // Verificar cada célula da linha
+            Array.from(cells).forEach(function(cell) {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    showRow = true; // Se algum valor corresponder ao termo de pesquisa, exibe a linha
+                }
+            });
+
+            // Exibir ou ocultar a linha da tabela com base no resultado
+            eventoItem.style.display = showRow ? "table-row" : "none";
+        });
+    });
+</script>
+
+
+
 <?php
 require_once "Frontend/template/footer.php";
 ?>

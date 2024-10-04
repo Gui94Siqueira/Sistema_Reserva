@@ -117,7 +117,7 @@ require_once "Frontend/template/header.php";
             </div>
         </div>
 
-        
+
         <h1>Mapa de salas</h1>
         <div class="table-responsive">
             <table style="background-color: #fff;" class="table table-striped">
@@ -132,8 +132,8 @@ require_once "Frontend/template/header.php";
                 </thead>
                 <tbody>
                     <?php foreach ($mapao as $mapa) : ?>
-                        <tr>
-                            <th scope="row"><?php echo $mapa['numero'] ?></th>
+                        <tr >
+                            <th scope="row" ><?php echo $mapa['numero'] ?></th>
                             <td><?php echo $mapa['titulo'] ?></td>
                             <td><?php echo $mapa['horario_inicio'] ?></td>
                             <td><?php echo $mapa['horario_fim'] ?></td>
@@ -145,8 +145,8 @@ require_once "Frontend/template/header.php";
         </div>
 
 
-        
-        
+
+
     </div>
 
     <?php
