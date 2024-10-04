@@ -68,6 +68,8 @@
 
 
     footer {
+      backdrop-filter: blur(5px);
+      background-color: rgba(255, 255, 255, 0.479);
       color: #333;
       padding: 10px;
       text-align: center;
