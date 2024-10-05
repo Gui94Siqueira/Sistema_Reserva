@@ -177,7 +177,7 @@
         public function listarSalas($data, $horario_inicio, $horario_fim, $dia_semana) {
             try {
                 // Ajustar a consulta SQL
-                $sql = "SELECT sala.numero, evento.titulo, reserva.horario_inicio, reserva.horario_fim, reserva.docente 
+                $sql = "SELECT sala.numero, evento.titulo, reserva.id, reserva.horario_inicio, reserva.horario_fim, reserva.docente 
                         FROM reserva 
                         LEFT JOIN sala ON reserva.sala_ID = sala.id
                         LEFT JOIN evento ON reserva.evento_ID = evento.id

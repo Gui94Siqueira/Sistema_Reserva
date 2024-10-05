@@ -3,16 +3,16 @@
     class AcessoSalas {
 
         private $id;
-        private $data_check;
         private $checado;
         private $id_reserva;
+        private $data_check;
 
-        public function __construct($id, $data_check, $checado, $id_reserva) 
+        public function __construct($id, $checado, $id_reserva, $data_check) 
         {
             $this->id = $id;
-            $this->data_check = $data_check;
             $this->checado = $checado;
             $this->id_reserva = $id_reserva;
+            $this->data_check = $data_check;
         }
 
 

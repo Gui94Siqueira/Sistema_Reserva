@@ -1,5 +1,9 @@
 <?php
 
+require_once "Backend/config/Database.php";
+require_once "Backend/entity/acesso_salas.php";
+require_once "Backend/dao/BaseDAO.php";
+
 class AcessoSalasDAO implements BaseDAO
 {
 
@@ -24,9 +28,9 @@ class AcessoSalasDAO implements BaseDAO
             return $acesso ?
                 new AcessoSalas(
                     $acesso['id'],
-                    $acesso['data_check'],
                     $acesso['checado'],
-                    $acesso['id_reserva']
+                    $acesso['id_reserva'],
+                    $acesso['data_check']
                 )
                 : null;
         } catch (PDOException $e) {
@@ -45,13 +49,13 @@ class AcessoSalasDAO implements BaseDAO
             return array_map(function ($acesso) {
                 return new AcessoSalas(
                     $acesso["id"],
-                    $acesso['data_check'],
                     $acesso['checado'],
-                    $acesso['id_reserva']
+                    $acesso['id_reserva'],
+                    $acesso['data_check']
                 );
             }, $acessos);
         } catch (\Throwable $th) {
-            //throw $th;
+            return false;
         }
     }
 
@@ -86,23 +90,25 @@ class AcessoSalasDAO implements BaseDAO
 
             $id = $acesso->getId();
             $checado = $acesso->getChecado();
-            $id_reserva = $acesso->id_reserva();
+            $id_reserva = $acesso->getId_reserva();
 
             $sql = "UPDATE acesso_salas SET data_check = NOW(), checado = :checado, id_reserva = :id_reserva WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':checado', $checado, PDO::PARAM_BOOL);
-            $stmt->bindParam(':id_reserva', $id_reserva, PDO::PARAM_BOOL);
+            $stmt->bindParam(':id_reserva', $id_reserva, PDO::PARAM_INT);
 
             $stmt->execute();
 
             return true;
         } catch (PDOException $e) {
+            echo $e;
             return false;
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         try {
             $sql = "DELETE FROM acesso_salas WHERE id = :id";
             $stmt = $this->db->prepare($sql);
@@ -110,7 +116,7 @@ class AcessoSalasDAO implements BaseDAO
             $stmt->execute();
 
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             return false;
         }
     }

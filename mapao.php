@@ -6,6 +6,12 @@ require_once "Backend/dao/tipoDAO.php";
 require_once "Backend/dao/EventoDAO.php";
 require_once "Backend/dao/SalaDAO.php";
 
+require_once "Backend/dao/Acesso_salasDAO.php";
+require_once "Backend/entity/acesso_salas.php";
+
+$acessoDAO = new AcessoSalasDAO();
+$acessos = $acessoDAO->getAll();
+
 date_default_timezone_set('America/Sao_Paulo');
 
 $data = date("y-m-d"); // Data no formato Y-m-d
@@ -71,6 +77,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+
+if (isset($_GET['checked'])) {
+    $checked = filter_var($_GET['checked'], FILTER_VALIDATE_BOOLEAN);
+    
+    if ($checked) {
+        require_once "Backend/dao/Acesso_salasDAO.php";
+        require_once "Backend/entity/acesso_salas.php";
+
+        $acessoDAO = new AcessoSalasDAO();
+        $acesso = new AcessoSalas(null, $_GET['checked'], $_GET['id_reserva'], null);
+
+        $acessoDAO->create($acesso);
+    } else {
+        echo "O checkbox está desmarcado (false).";
+        // Ação para quando o checkbox estiver desmarcado
+    }
+}
+
 ?>
 <?php
 require_once "Frontend/template/header.php";
@@ -128,16 +152,31 @@ require_once "Frontend/template/header.php";
                         <th scope="col">Inicio</th>
                         <th scope="col">Fim</th>
                         <th scope="col">Docente</th>
+                        <?php
+                        if (isset($_SESSION['token'])) {
+                            echo "<th scope'col'>Check</th>";
+                        }
+
+
+                        ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($mapao as $mapa) : ?>
-                        <tr >
-                            <th scope="row" ><?php echo $mapa['numero'] ?></th>
+                        <tr>
+                            <th scope="row"><?php echo $mapa['numero'] ?></th>
                             <td><?php echo $mapa['titulo'] ?></td>
                             <td><?php echo $mapa['horario_inicio'] ?></td>
                             <td><?php echo $mapa['horario_fim'] ?></td>
                             <td><?php echo $mapa['docente'] ?></td>
+                            <?php
+                            if (isset($_SESSION['token'])) :
+                            ?>
+                                <td>
+                                    <input class="form-check-input" type="checkbox" onchange="window.location.href='mapao.php?checked=' + this.checked + '&id_reserva=' + <?php echo $mapa['id'] ?>;" checked="" id="checkboxNoLabel" name="check" value="true" aria-label="..." />
+                                </td>
+
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -148,6 +187,7 @@ require_once "Frontend/template/header.php";
 
 
     </div>
+
 
     <?php
     require_once "Frontend/template/footer.php";
