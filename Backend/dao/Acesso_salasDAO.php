@@ -59,17 +59,46 @@ class AcessoSalasDAO implements BaseDAO
         }
     }
 
+    public function getByReservaAndDate($id_reserva, $data_check)
+{
+    try {
+        $sql = "SELECT * FROM acesso_salas WHERE id_reserva = :id_reserva AND data_check = :data_check";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id_reserva', $id_reserva);
+        $stmt->bindParam(':data_check', $data_check);
+        $stmt->execute();
+
+        $acesso = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($acesso) {
+            return new AcessoSalas(
+                $acesso["id"],
+                $acesso['checado'],
+                $acesso['id_reserva'],
+                $acesso['data_check']
+            );
+        }
+
+        return null;
+    } catch (\Throwable $th) {
+        return false;
+    }
+}
+
+
     public function create($acesso)
     {
         try {
-            $sql = "INSERT INTO acesso_salas (id, data_check, checado, id_reserva) VALUES (:id, NOW(), :checado, :id_reserva)";
+            $sql = "INSERT INTO acesso_salas (id, data_check, checado, id_reserva) VALUES (:id, :data_check, :checado, :id_reserva)";
 
             $id = $acesso->getId();
             $id_reseva = $acesso->getId_reserva();
             $checado = $acesso->getChecado();
+            $data_check = $acesso->getData_check();
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':data_check', $data_check, PDO::PARAM_STR);
             $stmt->bindParam(':checado', $checado, PDO::PARAM_BOOL);
             $stmt->bindParam(':id_reserva', $id_reseva, PDO::PARAM_INT);
             $stmt->execute();
@@ -91,10 +120,12 @@ class AcessoSalasDAO implements BaseDAO
             $id = $acesso->getId();
             $checado = $acesso->getChecado();
             $id_reserva = $acesso->getId_reserva();
+            $data_check = $acesso->getData_check();
 
-            $sql = "UPDATE acesso_salas SET data_check = NOW(), checado = :checado, id_reserva = :id_reserva WHERE id = :id";
+            $sql = "UPDATE acesso_salas SET data_check = :data_check, checado = :checado, id_reserva = :id_reserva WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':data_check', $data_check, PDO::PARAM_STR);
             $stmt->bindParam(':checado', $checado, PDO::PARAM_BOOL);
             $stmt->bindParam(':id_reserva', $id_reserva, PDO::PARAM_INT);
 
