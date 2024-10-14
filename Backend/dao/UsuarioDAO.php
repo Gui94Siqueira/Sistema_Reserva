@@ -67,7 +67,7 @@ class UsuarioDAO
             $nome = $usuario->getNome();
             $senha = $usuario->getSenha();
             $email = $usuario->getEmail();
-            $token = $usuario->getToken();
+            $token = $usuario->getToken(); 
 
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':senha', $senha);
