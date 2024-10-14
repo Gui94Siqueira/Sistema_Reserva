@@ -15,6 +15,48 @@ class UsuarioDAO
         $this->db = Database::getInstance();
     }
 
+    public function getAll() {
+        try {
+            $sql = "SELECT * FROM usuario";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return array_map(function($usuario) {
+                return new Usuario($usuario['id'],
+                                   $usuario['nome'],
+                                   $usuario['senha'],
+                                   $usuario['email'],
+                                   $usuario['token']);
+            }, $result);
+        } catch(PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getById($id) {
+        try{
+            $sql = "SELECT * FROM usuario WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam('id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $usuario ? new Usuario(
+                $usuario['id'],
+                $usuario['nome'],
+                $usuario['senha'],
+                $usuario['email'],
+                $usuario['token']
+            ) : null;
+
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function create($usuario)
     {
         try {
@@ -36,6 +78,26 @@ class UsuarioDAO
 
             return true;
         } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function update($usuario) {
+        try{
+
+            $id = $usuario->getId();
+            $nome = $usuario->getNome();
+            $email = $usuario->getEmail();
+
+            $sql = "UPDATE INTO usuario SET nome = :nome, email = :mail WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':nome', $nome, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return true;
+        } catch(PDOException) {
             return false;
         }
     }
@@ -74,6 +136,22 @@ class UsuarioDAO
 
             return true;
         } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function delete($email) {
+        try{
+
+            $emailValido = htmlspecialchars($email, ENT_NOQUOTES);
+
+            $sql = "DELETE FROM usuario WHERE email = :email";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':email', $emailValido);
+            $stmt->execute();
+
+            return true;
+        } catch(PDOException) {
             return false;
         }
     }

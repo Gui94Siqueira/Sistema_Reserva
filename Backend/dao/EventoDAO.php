@@ -117,7 +117,7 @@ class EventoDAO implements BaseDAO {
             $sigla = $evento->getSigla();
             $oferta = $evento->getOferta();
 
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':titulo', $titulo);
             $stmt->bindParam(':sigla', $sigla);
             $stmt->bindParam(':oferta', $oferta);

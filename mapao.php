@@ -33,7 +33,8 @@ function obterNumeroDiaSemana($data) {
 
 $mapaoDAO = new ReservaDAO();
 $dia_atual = date("Y-m-d");
-$hora_atual = date("H:i:s");
+$hora_ini = date("H:i:s");
+$hora_atual = date("H:i:s", strtotime('+1 hour'));
 $dia = obterNumeroDiaSemana($dia_atual);
 
 // Carregar salas para a data atual por padrão
