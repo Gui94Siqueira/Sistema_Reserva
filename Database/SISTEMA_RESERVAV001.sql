@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 
 CREATE TABLE IF NOT EXISTS acesso_salas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    data_check DATETIME NOT NULL,
+    data_check DATE NOT NULL,
     checado boolean NOT NULL,
     id_reserva INT,
     FOREIGN KEY (id_reserva) REFERENCES reserva(id)
