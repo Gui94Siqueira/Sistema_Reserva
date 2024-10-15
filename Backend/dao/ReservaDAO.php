@@ -158,7 +158,7 @@
 
                 return true;
             } catch (PDOException $e) {
-                return $e;
+                return false;
             }
         }
 
@@ -168,6 +168,8 @@
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(':id', $id);
                 $stmt->execute();
+
+                return true;
            
             } catch (PDOException $e) {
                 return false;

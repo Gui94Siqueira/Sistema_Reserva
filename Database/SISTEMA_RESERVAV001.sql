@@ -55,8 +55,7 @@ CREATE TABLE IF NOT EXISTS acesso_salas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     data_check DATE NOT NULL,
     checado boolean NOT NULL,
-    id_reserva INT,
-    FOREIGN KEY (id_reserva) REFERENCES reserva(id)
+    id_reserva INT NOT NULL
 );
 
 select * from acesso_salas;
