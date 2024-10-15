@@ -197,8 +197,8 @@ require_once "Frontend/template/header.php";
                     <tr class="item-table">
                         <td class="table-number"><?php echo $reserva['numero']; ?></td>
                         <td class="table-title"><?php echo $reserva['titulo']; ?></td>
-                        <td><?php echo $reserva['data_inicio']; ?></td>
-                        <td><?php echo $reserva['data_fim']; ?></td>
+                        <td><?php echo date('d/m/Y', strtotime($reserva['data_inicio'])); ?></td>
+                        <td><?php echo date('d/m/Y', strtotime($reserva['data_fim'])); ?></td>
                         <td><?php echo $reserva['horario_inicio']; ?></td>
                         <td><?php echo $reserva['horario_fim']; ?></td>
                         <td><?php echo $reserva['docente']; ?></td>
