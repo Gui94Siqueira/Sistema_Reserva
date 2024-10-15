@@ -176,6 +176,28 @@ require_once "Frontend/template/header.php";
                     </select>
                 </div>
 
+                <script>
+                    let data_fim = document.getElementById("data_fim");
+                    let data_inicio = document.getElementById("data_inicio");
+
+                    let horario_inicio = document.getElementById("horario_inicio");
+                    let horario_fim = document.getElementById("horario_fim");
+
+                    data_fim.addEventListener("input", function() {
+                        if (data_fim.value < data_inicio) {
+                            window.alert("A data final não pode ser antes da data inicial!");
+                            data_fim.value = '';
+                        }
+                    })
+
+                    horario_fim.addEventListener("input", function() {
+                        if (horario_fim.value < horario_inicio) {
+                            window.alert("O horario final não pode ser antes do horario de inicio");
+                            horario_fim.value = "";
+                        }
+                    })
+                </script>
+
                 <button type="submit" name="save" class="btn btn-success">Salvar</button>
                 <?php if ($reserva) : ?>
                     <button type="button" class="btn btn-danger" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">Excluir</button>
@@ -217,6 +239,7 @@ require_once "Frontend/template/header.php";
             </div>
     </form>
 </div>
+
 
 <script>
     let dias_semana = [<?= $reserva->getDias_semana() ?>];
