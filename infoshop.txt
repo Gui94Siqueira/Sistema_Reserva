@@ -1,0 +1,9 @@
+E-mail: senacpolotito@gmail.com
+senha: SePoloTito@2024
+senha hospedagem: zKvj8izaeA8NiT
+
+
+
+MySQL DB Name	                MySQL User Name	MySQL Password	MySQL Host Name	PHPMyAdmin
+if0_37561940_sistema_reserva	if0_37561940	(Your vPanel Password)	sql309.infinityfree.com
+
