@@ -107,24 +107,37 @@ require_once "Frontend/template/header.php";
 
                     <button type="submit" name="save" class="btn btn-success">Salvar</i></button>
                     <?php if (!$reservaEventoById) : ?>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Excluir</button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <button type="button" class="btn btn-danger" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#myModal">Excluir</button>
+                        
+                        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body text-center">
-                                        <p>Tem certeza de que deseja excluir a reserva de <b><?php echo $evento->getTitulo() ?></b> com o código de Oferta <b><?php echo $evento->getOferta() ?></b> e sigla <b><?php echo $evento->getSigla() ?></b>?</p>
-                                        <p>Esta ação não pode ser desfeita.</p>
-                                    </div>
-                                    <div class="modal-footer justify-content-center">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                                    <div class="modal-body">
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="modal-header">
+                                                    <h2 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h2>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <p>Tem certeza de que deseja excluir a reserva de <b><?php echo $evento->getTitulo() ?></b> com o código de Oferta <b><?php echo $evento->getOferta() ?></b> e sigla <b><?php echo $evento->getSigla() ?></b>?</p>
+                                                <p>Esta ação não pode ser desfeita.</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+                                                <button type="submit" name="delete" class="btn btn-danger">Excluir</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                     <?php endif ?>
@@ -153,7 +166,7 @@ require_once "Frontend/template/header.php";
                         <p class="card-text"><b>Data Fim:</b> <?php echo $reserva ? date('d/m/Y', strtotime(htmlspecialchars($reserva->getData_fim(), ENT_QUOTES, 'UTF-8'))) : ''; ?></p>
                         <p class="card-text"><b>Horario Inicio:</b> <?php echo htmlspecialchars($reserva ? $reserva->getHorario_inicio() : '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="card-text"><b>Horario Fim:</b> <?php echo htmlspecialchars($reserva ? $reserva->getHoraio_fim() : '', ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p class="card-text"><b>Sala:</b> <?php echo $reserva ? $salaDAO->getById($reserva->getSala_id())->getNumero()  : '' ; ?></p>
+                        <p class="card-text"><b>Sala:</b> <?php echo $reserva ? $salaDAO->getById($reserva->getSala_id())->getNumero()  : ''; ?></p>
                         <?php
                         $dias = explode(", ", $reserva->getDias_semana());
                         $string_dias = array();
@@ -189,11 +202,11 @@ require_once "Frontend/template/header.php";
                                     break;
                             }
                         }
-                        
+
                         $teste = implode(', ', $string_dias);
 
                         ?>
-                    
+
                         <p class="card-text" id="dias"><b>Dias da Semana:</b> <?php echo htmlspecialchars($reserva ? $teste : '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <a href="add_reserva.php?evento_id=<?php echo $_GET['evento_id']; ?>&reserva_id=<?php echo $reserva->getId(); ?>" class="btn btn-primary">Detalhes</a>
                     </div>
