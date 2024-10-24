@@ -26,7 +26,6 @@ $salas = $salaDAO->getAll();
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text">ID da Sala <?php echo htmlspecialchars($sala->getId(), ENT_QUOTES, 'UTF-8'); ?></p>
                             <p class="card-text">Numero de Sala: <?php echo htmlspecialchars($sala->getNumero(), ENT_QUOTES, 'UTF-8'); ?></p>
                             <p class="card-text">Capacidade <?php echo htmlspecialchars($sala->getCapacidade(), ENT_QUOTES, 'UTF-8'); ?></p>
                             <p class="card-text">Andar <?php echo htmlspecialchars($sala->getAndar(), ENT_QUOTES, 'UTF-8'); ?></p>

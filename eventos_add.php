@@ -102,5 +102,9 @@ require_once "Frontend/template/header.php";
     </div>
 </body>
 
+<?php
+require_once "Frontend/template/footer.php";
+?>
+
 
 </html>

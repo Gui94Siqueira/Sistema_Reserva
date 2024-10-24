@@ -149,8 +149,8 @@ require_once "Frontend/template/header.php";
                 <div class="card">
                     <div class="card-body">
                         <p class="card-text"><b>Docente:</b> <?php echo htmlspecialchars($reserva ? $reserva->getDocente() : '', ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p class="card-text"><b>Data Inicio:</b> <?php echo htmlspecialchars($reserva ? $reserva->getData_inicio() : '', ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p class="card-text"><b>Data Fim:</b> <?php echo htmlspecialchars($reserva ? $reserva->getData_fim() : '', ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="card-text"><b>Data Inicio:</b> <?php echo $reserva ? date('d/m/Y', strtotime(htmlspecialchars($reserva->getData_inicio(), ENT_QUOTES, 'UTF-8'))) : ''; ?></p>
+                        <p class="card-text"><b>Data Fim:</b> <?php echo $reserva ? date('d/m/Y', strtotime(htmlspecialchars($reserva->getData_fim(), ENT_QUOTES, 'UTF-8'))) : ''; ?></p>
                         <p class="card-text"><b>Horario Inicio:</b> <?php echo htmlspecialchars($reserva ? $reserva->getHorario_inicio() : '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="card-text"><b>Horario Fim:</b> <?php echo htmlspecialchars($reserva ? $reserva->getHoraio_fim() : '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="card-text"><b>Sala:</b> <?php echo $reserva ? $salaDAO->getById($reserva->getSala_id())->getNumero()  : '' ; ?></p>

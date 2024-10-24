@@ -66,25 +66,7 @@
       margin-top: 5px;
     }
 
-    .form-check-input[type=checkbox] {
-      width: 20px;
-      height: 20px;
-      border-radius: 100%;
-      display: flex;
-      justify-content: center;
-    }
-    .form-check-input[type=checkbox]:checked:focus {
-    background-color: #4EBB1F;
-    border: none;
-}
-
-
-    .form-check-input[type=checkbox]:checked {
-      background-image: none;
-      background-color: #4EBB1F;
-      border: none;
-    }
-
+  
 
     footer {
       backdrop-filter: blur(5px);

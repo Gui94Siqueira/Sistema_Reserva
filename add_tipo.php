@@ -66,6 +66,8 @@ require_once "Frontend/template/header.php";
                         <input type="text" class="form-control" id="tipo_sala" name="tipo_sala" value="<?php echo $tipo ? $tipo->getTipo() : ''  ?>" required>
                     </div>
 
+                    <br>
+
                     <button type="submit" name="save" class="btn btn-success">Salvar</button>
                     <?php if ($tipo) : ?>
 

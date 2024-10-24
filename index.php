@@ -7,7 +7,7 @@ require_once "Backend/dao/SalaDAO.php";
 
 
 $reservaDAO = new ReservaDAO();
-$reservas = $reservaDAO->listarSalasPorPeriodo("2024-01-01", "2025-01-01", "19:00", "22:00", "1, 2, 3");
+$reservas = $reservaDAO->listarSalasPorPeriodo(date("y-m-d"), date("y-m-d"), "06:00:00", "22:00:00", "1, 2, 3, 4, 5, 6");
 
 
 $dia_semana_numero = 0;
@@ -92,7 +92,7 @@ require_once "Frontend/template/header.php";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Filtro de salas Já reservadas</h1>
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -116,7 +116,7 @@ require_once "Frontend/template/header.php";
                                     <label for="horario_fim">Horario Fim: </label>
                                     <input type="time" class="form-control" name="horario_fim" require>
                                 </div>
-
+                                
                                 <h5>Dias da semana:</h5>
                                 <div>
                                     <div class="form-check form-check-inline">
@@ -154,14 +154,12 @@ require_once "Frontend/template/header.php";
                             <button type="submit" name="save" class="btn btn-success">Filtar</button>
                         </div>
                     </form>
+
                 </div>
 
             </div>
         </div>
     </div>
-
-
-
 
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -197,8 +195,8 @@ require_once "Frontend/template/header.php";
                     <tr class="item-table">
                         <td class="table-number"><?php echo $reserva['numero']; ?></td>
                         <td class="table-title"><?php echo $reserva['titulo']; ?></td>
-                        <td><?php echo $reserva['data_inicio']; ?></td>
-                        <td><?php echo $reserva['data_fim']; ?></td>
+                        <td><?php echo date('d/m/Y', strtotime($reserva['data_inicio'])); ?></td>
+                        <td><?php echo date('d/m/Y', strtotime($reserva['data_fim'])); ?></td>
                         <td><?php echo $reserva['horario_inicio']; ?></td>
                         <td><?php echo $reserva['horario_fim']; ?></td>
                         <td><?php echo $reserva['docente']; ?></td>

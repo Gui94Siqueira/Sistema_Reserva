@@ -77,6 +77,27 @@ if (isset($_POST['checked']) && isset($_POST['id_reserva']) && isset($_POST['dat
 <!-- Frontend: Formulário de Filtro e Tabela -->
 <?php require_once "Frontend/template/header.php"; ?>
 
+<style>
+    .form-check-input[type=checkbox] {
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .form-check-input[type=checkbox]:checked:focus {
+    background-color: #4EBB1F;
+    border: none;
+}
+
+
+    .form-check-input[type=checkbox]:checked {
+      background-image: none;
+      background-color: #4EBB1F;
+      border: none;
+    }
+</style>
+
 <body>
     <div class="container">
         <!-- Botão para abrir o modal de filtro -->
@@ -180,7 +201,7 @@ if (isset($_POST['checked']) && isset($_POST['id_reserva']) && isset($_POST['dat
             })
             .then(response => response.text())
             .then(data => {
-                console.log('Atualização bem-sucedida:', data);
+                console.log('Atualização bem-sucedida:');
             })
             .catch(error => {
                 console.error('Erro:', error);
