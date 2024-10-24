@@ -55,9 +55,5 @@ CREATE TABLE IF NOT EXISTS acesso_salas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     data_check DATE NOT NULL,
     checado boolean NOT NULL,
-<<<<<<< HEAD
-    id_reserva INT,
-=======
     id_reserva INT NOT NULL
->>>>>>> b3e12933850c38d379c885ff2cc5a15b11dd88ea
 );
