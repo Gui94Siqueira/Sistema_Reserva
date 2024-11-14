@@ -4,7 +4,7 @@ require_once "Backend/config/Database.php";
 require_once "Backend/dao/ReservaDAO.php";
 require_once "Backend/dao/tipoDAO.php";
 require_once "Backend/dao/EventoDAO.php";
-require_once "Backend/dao/SalaDAO.php";
+require_once "Backend/dao/salaDAO.php";
 require_once "Backend/dao/Acesso_salasDAO.php";
 require_once "Backend/entity/acesso_salas.php";
 

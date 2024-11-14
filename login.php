@@ -25,7 +25,7 @@ require_once "Frontend/template/header.php";
             <?php endif; ?>
 
             <!-- antes do if // para comentar e cadastrar primeiro usuario ADM da aplicação -->
-            <?php if (isset($_SESSION['token'])) : ?>
+            <?php //if (isset($_SESSION['token'])) : ?>
 
                 <div class="col-md-6">
                     <h2>Cadastro</h2>
@@ -51,7 +51,7 @@ require_once "Frontend/template/header.php";
                     </form>
                 </div>
                 <!-- antes do endif // para comentar e cadastrar primeiro usuario ADM da aplicação -->
-            <?php endif; ?>
+            <?php //endif; ?>
         </div>
     </div>
 </body>

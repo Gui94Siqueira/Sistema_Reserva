@@ -7,9 +7,9 @@ if(!isset($_SESSION['token'])) {
     exit();
 }
 
-include_once "../sistema_reserva/Backend/config/Database.php";
-include_once "../sistema_reserva/Backend/dao/EventoDAO.php";
-include_once "../sistema_reserva/Backend/entity/Evento.php";
+include_once "Backend/config/Database.php";
+include_once "Backend/dao/EventoDAO.php";
+include_once "Backend/entity/Evento.php";
 
 
 
