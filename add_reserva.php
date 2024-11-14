@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sala_id = $_POST['sala_id'];
 
         if ($reservaDAO->isConflict($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr)) {
-            $conflitos = $reservaDAO->getConflictingReservations($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr);
+            $conflitos = $reservaDAO->isConflict($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr);
 
             echo "<div class='alert alert-danger' role='alert'>Já existe uma reserva para este horário e sala.</div>";
 
@@ -177,26 +177,28 @@ require_once "Frontend/template/header.php";
                 </div>
 
                 <script>
-                    let data_fim = document.getElementById("data_fim");
-                    let data_inicio = document.getElementById("data_inicio");
+    let data_fim = document.getElementById("data_fim");
+    let data_inicio = document.getElementById("data_inicio");
 
-                    let horario_inicio = document.getElementById("horario_inicio");
-                    let horario_fim = document.getElementById("horario_fim");
+    let horario_inicio = document.getElementById("horario_inicio");
+    let horario_fim = document.getElementById("horario_fim");
 
-                    data_fim.addEventListener("input", function() {
-                        if (data_fim.value < data_inicio) {
-                            window.alert("A data final não pode ser antes da data inicial!");
-                            data_fim.value = '';
-                        }
-                    })
+    // Executa ao perder o foco (blur)
+    data_fim.addEventListener("blur", function() {
+        if (data_fim.value < data_inicio.value) {
+            window.alert("A data final não pode ser antes da data inicial!");
+            data_fim.value = '';
+        }
+    });
 
-                    horario_fim.addEventListener("input", function() {
-                        if (horario_fim.value < horario_inicio) {
-                            window.alert("O horario final não pode ser antes do horario de inicio");
-                            horario_fim.value = "";
-                        }
-                    })
-                </script>
+    // Também executa ao perder o foco (blur) em vez de input
+    horario_fim.addEventListener("blur", function() {
+        if (horario_fim.value < horario_inicio.value) {
+            window.alert("O horário final não pode ser antes do horário de início");
+            horario_fim.value = "";
+        }
+    });
+</script>
 
                 <button type="submit" name="save" class="btn btn-success">Salvar</button>
                 <?php if ($reserva) : ?>
