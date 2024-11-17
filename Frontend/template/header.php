@@ -1,3 +1,16 @@
+<?php
+// Verifica se a sessão já foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Inicia uma sessão na página
+}
+
+require_once "Backend/dao/UsuarioDAO.php";
+
+// Verifica o nível de acesso do usuário
+$usuarioDAO = new UsuarioDAO();
+$is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token']) : false;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,15 +18,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema Reserva de Salas</title>
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    rel="stylesheet" />
-
+  <!-- Inclua o CSS do MDBootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/mdb.min.css">
-
+  <!-- Inclua seus estilos personalizados -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
     body {
       min-height: 100vh;
@@ -26,14 +36,11 @@
       font-size: 90%;
     }
 
-
     nav {
       min-height: 70px;
       box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, .2);
       background-color: #fff;
     }
-
-
 
     .form-select {
       width: 100%;
@@ -66,8 +73,6 @@
       margin-top: 5px;
     }
 
-  
-
     footer {
       backdrop-filter: blur(5px);
       background-color: rgba(255, 255, 255, 0.479);
@@ -78,27 +83,18 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      /* z-index: 1000; */
     }
   </style>
 </head>
 
 <body>
   <header>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
       <!-- Container wrapper -->
       <div class="container">
         <!-- Toggle button -->
-        <button
-          data-mdb-collapse-init
-          class="navbar-toggler"
-          type="button"
-          data-mdb-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
+        <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-bars"></i>
         </button>
 
@@ -113,7 +109,6 @@
             </li>
 
             <?php if (isset($_SESSION['token'])) : ?>
-
               <li class="nav-item">
                 <a class="nav-link" href="eventos.php">Eventos</a>
               </li>
@@ -121,18 +116,10 @@
                 <a class="nav-link" href="index.php">Consultar</a>
               </li>
 
-
               <li class="nav-item dropdown">
-                <a
-                  data-mdb-dropdown-init
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  aria-expanded="false">
+                <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false">
                   <i class="fa-solid fa-building"></i>
                 </a>
-
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
                     <a class="dropdown-item" href="sala.php">Salas</a>
@@ -141,23 +128,18 @@
                     <a class="dropdown-item" href="tipo.php">Labs</a>
                   </li>
                 </ul>
-
+              </li>
 
               <li class="nav-item dropdown">
-                <a
-                  data-mdb-dropdown-init
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  aria-expanded="false">
+                <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false">
                   <i class="fa-solid fa-user"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li>
-                    <a class="dropdown-item" href="login.php">Adicionar</a>
-                  </li>
-
+                  <?php if ($is_admin) : ?>
+                    <li>
+                      <a class="dropdown-item" href="login.php">Adicionar</a>
+                    </li>
+                  <?php endif; ?>
                   <li>
                     <form action="authService.php" method="post" style="display: inline;">
                       <input type="hidden" name="type" value="logout">
@@ -165,18 +147,12 @@
                     </form>
                   </li>
                 </ul>
+              </li>
 
-              <?php else : ?>
-                <a class="nav-link" href="login.php"><b>Login</b></a>
-              <?php endif; ?>
-
+            <?php else : ?>
+              <a class="nav-link" href="login.php"><b>Login</b></a>
+            <?php endif; ?>
           </ul>
-
-
-
-
-
-          <!-- Left links -->
         </div>
         <!-- Collapsible wrapper -->
 
@@ -188,10 +164,15 @@
         </div>
         <!-- Right elements -->
       </div>
-      <!-- Container wrapper -->
     </nav>
-    <!-- Navbar -->
-
   </header>
 
   <main>
+    <!-- Conteúdo da página -->
+  </main>
+
+  <!-- Inclua os scripts JavaScript do MDBootstrap no fim do body -->
+  <script type="text/javascript" src="assets/js/mdb.min.js"></script>
+</body>
+
+</html>

@@ -7,7 +7,11 @@ require_once 'Backend/dao/UsuarioDAO.php';
 $type = filter_input(INPUT_POST, "type");
 
 if ($type === "register") {
-    //// Cadastro de Usuario
+    $usuarioDAO = new UsuarioDAO();
+    
+    // Verificação para cadastrar o primeiro usuário como administrador
+    $totalUsuarios = count($usuarioDAO->getAll());
+    $role = $totalUsuarios === 0 ? 'admin' : 'user'; // Primeiro usuário será ADM
 
     // Recebimento de dados vindos por input do HTML
     $new_nome = filter_input(INPUT_POST, "new_nome");
@@ -23,22 +27,24 @@ if ($type === "register") {
             $token = bin2hex(random_bytes(25));
             
             // Criação do Usuário no banco de dados por uso do UsuarioDAO
-            $usuario = new Usuario(null, $new_nome, $hashed_password, $new_email, $token);
-            $usuarioDAO = new UsuarioDAO();
+            $usuario = new Usuario(null, $new_nome, $hashed_password, $new_email, $token, $role);
 
-            if(!$usuarioDAO->getByEmail($new_email)) {
-                $success = $usuarioDAO->create($usuario);
+            try {
+                if(!$usuarioDAO->getByEmail($new_email)) {
+                    $success = $usuarioDAO->create($usuario);
 
-                if($success) {
-                    $_SESSION['token'] = $token;
-                    header('Location: index.php');  
-                    exit();
+                    if($success) {
+                        $_SESSION['token'] = $token;
+                        header('Location: index.php');  
+                        exit();
+                    } else {
+                        throw new Exception("Erro ao registrar no banco de dados!");
+                    }
                 } else {
-                    echo "Erro ao registrar no banco de dados!";
-                    exit();
+                    throw new Exception("Email já utilizado");
                 }
-            } else {
-                echo "Email já utilizado";
+            } catch (Exception $e) {
+                echo "Erro: " . $e->getMessage();
             }
         } else {
             echo "Senhas incompatíveis!";
@@ -54,6 +60,10 @@ if ($type === "register") {
     $usuario = $usuarioDAO->getByEmail($email);
 
     if($usuario) {
+        // Depuração: Mostrar senha armazenada e senha fornecida
+        echo "Senha armazenada (hashed): " . $usuario->getSenha() . "<br>";
+        echo "Senha fornecida: " . $password . "<br>";
+
         if(password_verify($password, $usuario->getSenha())) {
             $token = bin2hex(random_bytes(25));
             $usuarioDAO->updateToken($usuario->getId(), $token);

@@ -1,6 +1,11 @@
 <?php
 session_start(); // Inicia uma sessão na página
 require_once "Frontend/template/header.php";
+require_once "Backend/dao/UsuarioDAO.php";
+
+// Verifica o nível de acesso do usuário
+$usuarioDAO = new UsuarioDAO();
+$is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token']) : false;
 ?>
 
 <body>
@@ -24,9 +29,7 @@ require_once "Frontend/template/header.php";
                 </div>
             <?php endif; ?>
 
-            <!-- antes do if // para comentar e cadastrar primeiro usuario ADM da aplicação -->
-            <?php //if (isset($_SESSION['token'])) : ?>
-
+            <?php if (isset($_SESSION['token']) && $is_admin) : ?>
                 <div class="col-md-6">
                     <h2>Cadastro</h2>
                     <form action="authService.php" method="post">
@@ -50,8 +53,7 @@ require_once "Frontend/template/header.php";
                         <button type="submit" class="btn btn-primary">Cadastrar</button>
                     </form>
                 </div>
-                <!-- antes do endif // para comentar e cadastrar primeiro usuario ADM da aplicação -->
-            <?php //endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </body>

@@ -7,14 +7,16 @@ class Usuario
     private $senha;
     private $email;
     private $token;
+    private $role; // Nova propriedade para o nível do usuário
 
-    public function __construct($id, $nome, $senha, $email, $token)
+    public function __construct($id, $nome, $senha, $email, $token, $role = 'user')
     {
         $this->id = $id;
         $this->nome = $nome;
         $this->senha = $senha;
         $this->email = $email;
         $this->token = $token;
+        $this->role = $role;
     }
 
     public function getId()
@@ -42,6 +44,10 @@ class Usuario
         return $this->token;
     }
 
+    public function getRole()
+    {
+        return $this->role;
+    }
 
     public function setNome($nome)
     {
@@ -61,5 +67,11 @@ class Usuario
     public function setToken($token)
     {
         $this->token = $token;
-    }    
+    }
+
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
 }
+?>
