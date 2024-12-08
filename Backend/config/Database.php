@@ -8,7 +8,7 @@ class Database {
             $host = 'localhost';
             $dbname = 'sistema_reserva';
             $username = 'root';
-            $password = '';
+            $password = 'Osasco@2018';
 
             self::$instance = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
             self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -1,6 +1,20 @@
 <?php
 session_start();
 
+require_once "Backend/dao/UsuarioDAO.php";
+
+// Verifica o nível de acesso do usuário
+$usuarioDAO = new UsuarioDAO();
+$is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token']) : false;
+$is_didatico = isset($_SESSION['token']) ? $usuarioDAO->isDidatico($_SESSION['token']) : false;
+$is_gestor = isset($_SESSION['token']) ? $usuarioDAO->isGestor($_SESSION['token']) : false;
+
+
+if (!isset($_SESSION['token']) || $is_didatico) {
+    header("Location: mapao.php");
+    exit();
+}
+
 require_once "Backend/config/Database.php";
 require_once "Backend/dao/ReservaDAO.php";
 require_once "Backend/dao/salaDAO.php";

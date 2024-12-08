@@ -7,16 +7,20 @@ class Usuario
     private $senha;
     private $email;
     private $token;
-    private $role; // Nova propriedade para o nível do usuário
+    private $roles; // Nova propriedade para o nível do usuário
+    private $criado;
+    private $atualizado;
 
-    public function __construct($id, $nome, $senha, $email, $token, $role = 'user')
+    public function __construct($id, $nome, $senha, $email, $token, $roles = 'Admin', $criado, $atualizado)
     {
         $this->id = $id;
         $this->nome = $nome;
         $this->senha = $senha;
         $this->email = $email;
         $this->token = $token;
-        $this->role = $role;
+        $this->roles = $roles;
+        $this->criado = $criado;
+        $this->atualizado = $atualizado;
     }
 
     public function getId()
@@ -46,7 +50,17 @@ class Usuario
 
     public function getRole()
     {
-        return $this->role;
+        return $this->roles;
+    }
+
+    public function getCriado()
+    {
+        return $this->criado;
+    }
+
+    public function getAtualizado()
+    {
+        return $this->atualizado;
     }
 
     public function setNome($nome)
@@ -69,9 +83,9 @@ class Usuario
         $this->token = $token;
     }
 
-    public function setRole($role)
+    public function setRole($roles)
     {
-        $this->role = $role;
+        $this->roles = $roles;
     }
 }
 ?>

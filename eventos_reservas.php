@@ -2,10 +2,19 @@
 
 session_start(); // Inicia uma sessão na página
 
-if (!isset($_SESSION['token'])) {
-    header("Location: ./login.php");
+require_once 'Backend/dao/UsuarioDAO.php';
+
+// Verifica o nível de acesso do usuário
+$usuarioDAO = new UsuarioDAO();
+$is_didatico = isset($_SESSION['token']) ? $usuarioDAO->isDidatico($_SESSION['token']) : false;
+
+
+
+if (!isset($_SESSION['token']) || $is_didatico) {
+    header("Location: mapao.php");
     exit();
 }
+
 
 
 include_once "Backend/dao/EventoDAO.php";

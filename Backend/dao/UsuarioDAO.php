@@ -29,7 +29,9 @@ class UsuarioDAO
                     $usuario['senha'],
                     $usuario['email'],
                     $usuario['token'],
-                    $usuario['role']
+                    $usuario['roles'],
+                    $usuario['created_at'],
+                    $usuario['updated_at']
                 );
             }, $result);
         } catch (PDOException $e) {
@@ -53,7 +55,9 @@ class UsuarioDAO
                 $usuario['senha'],
                 $usuario['email'],
                 $usuario['token'],
-                $usuario['role']
+                $usuario['roles'],
+                $usuario['created_at'],
+                $usuario['updated_at']
             ) : null;
         } catch (PDOException $e) {
             return false;
@@ -63,8 +67,8 @@ class UsuarioDAO
     public function create($usuario)
     {
         try {
-            $sql = "INSERT INTO usuario (nome, senha, email, token, role)
-                    VALUES (:nome, :senha, :email, :token, :role)";
+            $sql = "INSERT INTO usuario (nome, senha, email, token, roles, created_at)
+                    VALUES (:nome, :senha, :email, :token, :roles, now())";
             $stmt = $this->db->prepare($sql);
 
             $nome = $usuario->getNome();
@@ -72,12 +76,13 @@ class UsuarioDAO
             $email = $usuario->getEmail();
             $token = $usuario->getToken();
             $role = $usuario->getRole();
+            echo $role;
 
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':senha', $senha);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':token', $token);
-            $stmt->bindParam(':role', $role);
+            $stmt->bindParam(':roles', $role);
 
             $stmt->execute();
 
@@ -93,19 +98,24 @@ class UsuarioDAO
             $id = $usuario->getId();
             $nome = $usuario->getNome();
             $email = $usuario->getEmail();
+            $senha = $usuario->getSenha();
+            $token = $usuario->getToken();
             $role = $usuario->getRole();
 
-            $sql = "UPDATE usuario SET nome = :nome, email = :email, role = :role WHERE id = :id";
+            $sql = "UPDATE usuario SET nome = :nome, email = :email, token = :token, senha = :senha, roles = :roles, updated_at = NOW() WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':nome', $nome, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':role', $role, PDO::PARAM_STR);
+            $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->bindParam(':roles', $role, PDO::PARAM_STR);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
+            $result = $stmt->execute();
 
-            return true;
-        } catch (PDOException) {
-            return false;
+
+            return $result;
+        } catch (PDOException $e) {
+            return print_r($e);
         }
     }
 
@@ -125,7 +135,9 @@ class UsuarioDAO
                 $usuario['senha'],
                 $usuario['email'],
                 $usuario['token'],
-                $usuario['role']
+                $usuario['roles'],
+                $usuario['created_at'],
+                $usuario['updated_at']
             ) : null;
         } catch (PDOException $e) {
             return null;
@@ -167,12 +179,40 @@ class UsuarioDAO
     public function isAdmin($token)
     {
         try {
-            $sql = "SELECT role FROM usuario WHERE token = :token";
+            $sql = "SELECT roles FROM usuario WHERE token = :token";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(":token", $token);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result && $result['role'] === 'admin';
+            return $result && $result['roles'] == 'Admin';
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function isDidatico($token)
+    {
+        try {
+            $sql = "SELECT roles FROM usuario WHERE token = :token";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":token", $token);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result && $result['roles'] == 'Didático';
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function isGestor($token)
+    {
+        try {
+            $sql = "SELECT roles FROM usuario WHERE token = :token";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":token", $token);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result && $result['roles'] == 'Gestor';
         } catch (PDOException $e) {
             return false;
         }

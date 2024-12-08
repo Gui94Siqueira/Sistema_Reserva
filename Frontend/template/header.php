@@ -9,6 +9,8 @@ require_once "Backend/dao/UsuarioDAO.php";
 // Verifica o nível de acesso do usuário
 $usuarioDAO = new UsuarioDAO();
 $is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token']) : false;
+$is_didatico = isset($_SESSION['token']) ? $usuarioDAO->isDidatico($_SESSION['token']) : false;
+$is_gestor = isset($_SESSION['token']) ? $usuarioDAO->isGestor($_SESSION['token']) : false;
 ?>
 
 <!DOCTYPE html>
@@ -108,7 +110,7 @@ $is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token'])
               <a class="nav-link active" aria-current="page" href="mapao.php">Mapa</a>
             </li>
 
-            <?php if (isset($_SESSION['token'])) : ?>
+            <?php if ($is_admin || $is_gestor) : ?>
               <li class="nav-item">
                 <a class="nav-link" href="eventos.php">Eventos</a>
               </li>
@@ -135,22 +137,37 @@ $is_admin = isset($_SESSION['token']) ? $usuarioDAO->isAdmin($_SESSION['token'])
                   <i class="fa-solid fa-user"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php if ($is_admin) : ?>
-                    <li>
-                      <a class="dropdown-item" href="login.php">Adicionar</a>
-                    </li>
-                  <?php endif; ?>
+                      <?php if ($is_admin) : ?>
+                        <li>
+                          <a class="dropdown-item" href="login.php">Adicionar</a>
+                        </li>
+                      <?php endif; ?>
+                      <?php if ($is_gestor) : ?>
+                        <li>
+                          <a class="dropdown-item" href="gestaoUsuarios.php">Gestão de Usuários</a>
+                        </li>
+                      <?php endif; ?>
                   <li>
-                    <form action="authService.php" method="post" style="display: inline;">
-                      <input type="hidden" name="type" value="logout">
-                      <button class="dropdown-item" id="btnLogout" type="submit">Logout</button>
-                    </form>
+                    
+                      <form action="authService.php" method="post" style="display: inline;">
+                        <input type="hidden" name="type" value="logout">
+                        <button class="dropdown-item" id="btnLogout" type="submit">Logout</button>
+                      </form>
+          
                   </li>
                 </ul>
               </li>
 
             <?php else : ?>
+              <?php if($is_didatico) : ?>
+                <form action="authService.php" method="post" style="display: inline;">
+                  <input type="hidden" name="type" value="logout">
+                  <button class="dropdown-item" id="btnLogout" type="submit">Logout</button>
+                </form>
+              <?php endif?>
+              <?php if (!isset($_SESSION['token']) || !$is_didatico) : ?>
               <a class="nav-link" href="login.php"><b>Login</b></a>
+              <?php endif; ?>
             <?php endif; ?>
           </ul>
         </div>

@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+require_once "Backend/dao/UsuarioDAO.php";
+
+// Verifica o nível de acesso do usuário
+$usuarioDAO = new UsuarioDAO();
+$is_didatico = isset($_SESSION['token']) ? $usuarioDAO->isDidatico($_SESSION['token']) : false;
+
 require_once "Backend/config/Database.php";
 require_once "Backend/dao/ReservaDAO.php";
 require_once "Backend/dao/tipoDAO.php";
@@ -151,7 +158,7 @@ if (isset($_POST['checked']) && isset($_POST['id_reserva']) && isset($_POST['dat
                         <th scope="col">Início</th>
                         <th scope="col">Fim</th>
                         <th scope="col">Docente</th>
-                        <?php if (isset($_SESSION['token'])): ?>
+                        <?php if ($is_didatico): ?>
                             <th scope="col">Check</th>
                         <?php endif; ?>
                     </tr>
@@ -164,7 +171,7 @@ if (isset($_POST['checked']) && isset($_POST['id_reserva']) && isset($_POST['dat
                             <td><?php echo $mapa['horario_inicio'] ?></td>
                             <td><?php echo $mapa['horario_fim'] ?></td>
                             <td><?php echo $mapa['docente'] ?></td>
-                            <?php if (isset($_SESSION['token'])): ?>
+                            <?php if ($is_didatico): ?>
                                 <td>
                                     <input
                                         class="form-check-input"
