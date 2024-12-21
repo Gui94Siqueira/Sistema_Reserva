@@ -9,7 +9,6 @@ $usuarioDAO = new UsuarioDAO();
 $is_didatico = isset($_SESSION['token']) ? $usuarioDAO->isDidatico($_SESSION['token']) : false;
 
 
-
 if (!isset($_SESSION['token']) || $is_didatico) {
     header("Location: mapao.php");
     exit();
@@ -45,7 +44,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $horario_fim = $_POST['horario_fim'];
         $sala_id = $_POST['sala_id'];
 
-        if ($reservaDAO->isConflict($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr)) {
+        $_isConflict = $reservaDAO->isConflict($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr);
+
+        function validationConflictUpdate($_isConflict, $id_reserva, $id_sala, $id_evento){
+            if($_isConflict['reserva_id'] == $id_reserva && $_isConflict['sala_ID'] == $id_sala && $_isConflict['evento_ID'] == $id_evento){
+                return true;
+            }
+
+            return false;
+
+        }
+
+        if ($_isConflict || validationConflictUpdate($_isConflict, isset($_GET['reserva_id']), $sala_id, $_POST['evento_id'])) {
+
             $conflitos = $reservaDAO->isConflict($data_inicio, $data_fim, $horario_inicio, $horario_fim, $sala_id, $dias_semanaStr);
 
             echo "<div class='alert alert-danger' role='alert'>Já existe uma reserva para este horário e sala.</div>";
@@ -283,6 +294,80 @@ require_once "Frontend/template/header.php";
         }
     })
 </script>
+
+<script>
+
+document.getElementById("data_inicio").addEventListener("change", checkAvailableRooms);
+document.getElementById("data_fim").addEventListener("change", checkAvailableRooms);
+document.getElementById("horario_inicio").addEventListener("change", checkAvailableRooms);
+document.getElementById("horario_fim").addEventListener("change", checkAvailableRooms);
+
+const diasCheckboxes = document.querySelectorAll('input[name="dias[]"]');
+diasCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", checkAvailableRooms);
+});
+
+    function checkAvailableRooms() {
+    // Obtenção dos valores dos campos do formulário
+    const dataInicio = document.getElementById("data_inicio").value;
+    const dataFim = document.getElementById("data_fim").value;
+    const horarioInicio = document.getElementById("horario_inicio").value;
+    const horarioFim = document.getElementById("horario_fim").value;
+    const diasSemana = [];
+    const diasCheckbox = document.querySelectorAll('input[name="dias[]"]:checked');
+
+    diasCheckbox.forEach(checkbox => {
+        diasSemana.push(checkbox.value);
+    });
+
+    // Se os campos não estiverem preenchidos, não faz a verificação
+    if (!dataInicio || !dataFim || !horarioInicio || !horarioFim || diasSemana.length === 0) {
+        return;
+    }
+
+    // Aqui vai a requisição para o servidor para verificar as salas disponíveis
+    // O ideal seria você chamar uma API ou fazer uma requisição AJAX para verificar os conflitos no servidor.
+    // Suponhamos que você tenha a função PHP isConflict no lado do servidor e que você use AJAX para chamar essa função.
+
+    // Exemplo de chamada AJAX usando fetch
+    fetch('verificar_salas_disponiveis.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            data_inicio: dataInicio,
+            data_fim: dataFim,
+            horario_inicio: horarioInicio,
+            horario_fim: horarioFim,
+            dias_semana: diasSemana
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Atualize o campo de seleção das salas com as salas disponíveis
+        const salasDisponiveis = data.salasDisponiveis;
+
+        // Limpar as opções existentes
+        const salaSelect = document.getElementById("sala_id");
+        salaSelect.innerHTML = '';
+
+        // Adicionar novas opções (salas disponíveis)
+        salasDisponiveis.forEach(sala => {
+            const option = document.createElement('option');
+            option.value = sala.id;
+            option.textContent = sala.numero;
+            salaSelect.appendChild(option);
+        });
+
+    })
+    .catch(error => {
+        console.error('Erro ao verificar salas disponíveis:', error);
+    });
+}
+
+</script>
+
 <?php
 require_once "Frontend/template/footer.php";
 ?>

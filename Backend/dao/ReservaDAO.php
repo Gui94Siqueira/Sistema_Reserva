@@ -277,7 +277,7 @@ class ReservaDAO implements BaseDAO
 {
     try {
         // Construindo a query SQL dinamicamente com base nos dias da semana e na sala fornecidos
-        $sql = "SELECT *
+        $sql = "SELECT reserva.id as reserva_id, reserva.*
                 FROM reserva 
                 LEFT JOIN sala ON reserva.sala_ID = sala.id
                 LEFT JOIN evento ON reserva.evento_ID = evento.id
